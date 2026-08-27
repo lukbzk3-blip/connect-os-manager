@@ -94,7 +94,10 @@ export function ClienteForm({ clienteId, initial }: { clienteId?: string; initia
     if (clienteId) {
       const { error } = await supabase.from("clientes").update(payload).eq("id", clienteId);
       setSaving(false);
-      if (error) return toast.error(`Erro ao salvar: ${error.message}`);
+      if (error) {
+        toast.error(`Erro ao salvar: ${error.message}`);
+        return;
+      }
       queryClient.invalidateQueries({ queryKey: ["clientes"] });
       queryClient.invalidateQueries({ queryKey: ["cliente", clienteId] });
       toast.success("Cliente atualizado.");
