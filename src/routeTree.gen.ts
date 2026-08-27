@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAparelhosIndexRouteImport } from './routes/_authenticated/aparelhos.index'
+import { Route as AuthenticatedAparelhosNovoRouteImport } from './routes/_authenticated/aparelhos.novo'
 import { Route as AuthenticatedClientesIndexRouteImport } from './routes/_authenticated/clientes.index'
 import { Route as AuthenticatedClientesIdRouteImport } from './routes/_authenticated/clientes.$id'
 import { Route as AuthenticatedClientesNovoRouteImport } from './routes/_authenticated/clientes.novo'
@@ -44,6 +45,12 @@ const AuthenticatedAparelhosIndexRoute =
     path: '/aparelhos/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAparelhosNovoRoute =
+  AuthenticatedAparelhosNovoRouteImport.update({
+    id: '/aparelhos/novo',
+    path: '/aparelhos/novo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedClientesIndexRoute =
   AuthenticatedClientesIndexRouteImport.update({
     id: '/clientes/',
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/clientes/novo': typeof AuthenticatedClientesNovoRoute
   '/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
@@ -82,6 +90,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/clientes/novo': typeof AuthenticatedClientesNovoRoute
   '/aparelhos': typeof AuthenticatedAparelhosIndexRoute
@@ -94,6 +103,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/_authenticated/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/_authenticated/clientes/novo': typeof AuthenticatedClientesNovoRoute
   '/_authenticated/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/aparelhos/novo'
     | '/clientes/$id'
     | '/clientes/novo'
     | '/aparelhos/'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/aparelhos/novo'
     | '/clientes/$id'
     | '/clientes/novo'
     | '/aparelhos'
@@ -127,6 +139,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/dashboard'
+    | '/_authenticated/aparelhos/novo'
     | '/_authenticated/clientes/$id'
     | '/_authenticated/clientes/novo'
     | '/_authenticated/aparelhos/'
@@ -177,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAparelhosIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/aparelhos/novo': {
+      id: '/_authenticated/aparelhos/novo'
+      path: '/aparelhos/novo'
+      fullPath: '/aparelhos/novo'
+      preLoaderRoute: typeof AuthenticatedAparelhosNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/clientes/': {
       id: '/_authenticated/clientes/'
       path: '/clientes'
@@ -224,6 +244,7 @@ const AuthenticatedClientesIdRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedAparelhosNovoRoute: typeof AuthenticatedAparelhosNovoRoute
   AuthenticatedClientesIdRoute: typeof AuthenticatedClientesIdRouteWithChildren
   AuthenticatedClientesNovoRoute: typeof AuthenticatedClientesNovoRoute
   AuthenticatedAparelhosIndexRoute: typeof AuthenticatedAparelhosIndexRoute
@@ -232,6 +253,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedAparelhosNovoRoute: AuthenticatedAparelhosNovoRoute,
   AuthenticatedClientesIdRoute: AuthenticatedClientesIdRouteWithChildren,
   AuthenticatedClientesNovoRoute: AuthenticatedClientesNovoRoute,
   AuthenticatedAparelhosIndexRoute: AuthenticatedAparelhosIndexRoute,
