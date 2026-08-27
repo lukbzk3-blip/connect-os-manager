@@ -19,12 +19,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type Search = { cliente: string | undefined };
+type Search = { cliente?: string };
 
 export const Route = createFileRoute("/_authenticated/aparelhos/novo")({
-  validateSearch: (search: Record<string, unknown>): Search => ({
-    cliente: typeof search['cliente'] === "string" ? (search['cliente'] as string) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): Search =>
+    typeof search['cliente'] === "string" ? { cliente: search['cliente'] as string } : {},
   head: () => ({
     meta: [
       { title: "Novo aparelho — CONNECT SISTEMAS" },
