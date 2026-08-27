@@ -13,6 +13,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedAparelhosIndexRouteImport } from './routes/_authenticated/aparelhos.index'
+import { Route as AuthenticatedAparelhosNovoRouteImport } from './routes/_authenticated/aparelhos.novo'
+import { Route as AuthenticatedClientesIndexRouteImport } from './routes/_authenticated/clientes.index'
+import { Route as AuthenticatedClientesIdRouteImport } from './routes/_authenticated/clientes.$id'
+import { Route as AuthenticatedClientesNovoRouteImport } from './routes/_authenticated/clientes.novo'
+import { Route as AuthenticatedOsIndexRouteImport } from './routes/_authenticated/os.index'
+import { Route as AuthenticatedOsNovoRouteImport } from './routes/_authenticated/os.novo'
+import { Route as AuthenticatedClientesIdEditarRouteImport } from './routes/_authenticated/clientes.$id.editar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -33,16 +41,77 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAparelhosIndexRoute =
+  AuthenticatedAparelhosIndexRouteImport.update({
+    id: '/aparelhos/',
+    path: '/aparelhos/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAparelhosNovoRoute =
+  AuthenticatedAparelhosNovoRouteImport.update({
+    id: '/aparelhos/novo',
+    path: '/aparelhos/novo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedClientesIndexRoute =
+  AuthenticatedClientesIndexRouteImport.update({
+    id: '/clientes/',
+    path: '/clientes/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedClientesIdRoute = AuthenticatedClientesIdRouteImport.update({
+  id: '/clientes/$id',
+  path: '/clientes/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedClientesNovoRoute =
+  AuthenticatedClientesNovoRouteImport.update({
+    id: '/clientes/novo',
+    path: '/clientes/novo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOsIndexRoute = AuthenticatedOsIndexRouteImport.update({
+  id: '/os/',
+  path: '/os/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOsNovoRoute = AuthenticatedOsNovoRouteImport.update({
+  id: '/os/novo',
+  path: '/os/novo',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedClientesIdEditarRoute =
+  AuthenticatedClientesIdEditarRouteImport.update({
+    id: '/editar',
+    path: '/editar',
+    getParentRoute: () => AuthenticatedClientesIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
+  '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
+  '/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/os/novo': typeof AuthenticatedOsNovoRoute
+  '/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
+  '/clientes/': typeof AuthenticatedClientesIndexRoute
+  '/os/': typeof AuthenticatedOsIndexRoute
+  '/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
+  '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
+  '/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/os/novo': typeof AuthenticatedOsNovoRoute
+  '/aparelhos': typeof AuthenticatedAparelhosIndexRoute
+  '/clientes': typeof AuthenticatedClientesIndexRoute
+  '/os': typeof AuthenticatedOsIndexRoute
+  '/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -50,14 +119,56 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
+  '/_authenticated/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
+  '/_authenticated/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/_authenticated/os/novo': typeof AuthenticatedOsNovoRoute
+  '/_authenticated/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
+  '/_authenticated/clientes/': typeof AuthenticatedClientesIndexRoute
+  '/_authenticated/os/': typeof AuthenticatedOsIndexRoute
+  '/_authenticated/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/aparelhos/novo'
+    | '/clientes/$id'
+    | '/clientes/novo'
+    | '/os/novo'
+    | '/aparelhos/'
+    | '/clientes/'
+    | '/os/'
+    | '/clientes/$id/editar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/aparelhos/novo'
+    | '/clientes/$id'
+    | '/clientes/novo'
+    | '/os/novo'
+    | '/aparelhos'
+    | '/clientes'
+    | '/os'
+    | '/clientes/$id/editar'
   id:
-    '__root__' | '/' | '/_authenticated' | '/auth' | '/_authenticated/dashboard'
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/aparelhos/novo'
+    | '/_authenticated/clientes/$id'
+    | '/_authenticated/clientes/novo'
+    | '/_authenticated/os/novo'
+    | '/_authenticated/aparelhos/'
+    | '/_authenticated/clientes/'
+    | '/_authenticated/os/'
+    | '/_authenticated/clientes/$id/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -96,15 +207,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/aparelhos/': {
+      id: '/_authenticated/aparelhos/'
+      path: '/aparelhos'
+      fullPath: '/aparelhos/'
+      preLoaderRoute: typeof AuthenticatedAparelhosIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/aparelhos/novo': {
+      id: '/_authenticated/aparelhos/novo'
+      path: '/aparelhos/novo'
+      fullPath: '/aparelhos/novo'
+      preLoaderRoute: typeof AuthenticatedAparelhosNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/clientes/': {
+      id: '/_authenticated/clientes/'
+      path: '/clientes'
+      fullPath: '/clientes/'
+      preLoaderRoute: typeof AuthenticatedClientesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/clientes/$id': {
+      id: '/_authenticated/clientes/$id'
+      path: '/clientes/$id'
+      fullPath: '/clientes/$id'
+      preLoaderRoute: typeof AuthenticatedClientesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/clientes/novo': {
+      id: '/_authenticated/clientes/novo'
+      path: '/clientes/novo'
+      fullPath: '/clientes/novo'
+      preLoaderRoute: typeof AuthenticatedClientesNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/os/': {
+      id: '/_authenticated/os/'
+      path: '/os'
+      fullPath: '/os/'
+      preLoaderRoute: typeof AuthenticatedOsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/os/novo': {
+      id: '/_authenticated/os/novo'
+      path: '/os/novo'
+      fullPath: '/os/novo'
+      preLoaderRoute: typeof AuthenticatedOsNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/clientes/$id/editar': {
+      id: '/_authenticated/clientes/$id/editar'
+      path: '/editar'
+      fullPath: '/clientes/$id/editar'
+      preLoaderRoute: typeof AuthenticatedClientesIdEditarRouteImport
+      parentRoute: typeof AuthenticatedClientesIdRoute
+    }
   }
 }
 
+interface AuthenticatedClientesIdRouteChildren {
+  AuthenticatedClientesIdEditarRoute: typeof AuthenticatedClientesIdEditarRoute
+}
+
+const AuthenticatedClientesIdRouteChildren: AuthenticatedClientesIdRouteChildren =
+  {
+    AuthenticatedClientesIdEditarRoute: AuthenticatedClientesIdEditarRoute,
+  }
+
+const AuthenticatedClientesIdRouteWithChildren =
+  AuthenticatedClientesIdRoute._addFileChildren(
+    AuthenticatedClientesIdRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedAparelhosNovoRoute: typeof AuthenticatedAparelhosNovoRoute
+  AuthenticatedClientesIdRoute: typeof AuthenticatedClientesIdRouteWithChildren
+  AuthenticatedClientesNovoRoute: typeof AuthenticatedClientesNovoRoute
+  AuthenticatedOsNovoRoute: typeof AuthenticatedOsNovoRoute
+  AuthenticatedAparelhosIndexRoute: typeof AuthenticatedAparelhosIndexRoute
+  AuthenticatedClientesIndexRoute: typeof AuthenticatedClientesIndexRoute
+  AuthenticatedOsIndexRoute: typeof AuthenticatedOsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedAparelhosNovoRoute: AuthenticatedAparelhosNovoRoute,
+  AuthenticatedClientesIdRoute: AuthenticatedClientesIdRouteWithChildren,
+  AuthenticatedClientesNovoRoute: AuthenticatedClientesNovoRoute,
+  AuthenticatedOsNovoRoute: AuthenticatedOsNovoRoute,
+  AuthenticatedAparelhosIndexRoute: AuthenticatedAparelhosIndexRoute,
+  AuthenticatedClientesIndexRoute: AuthenticatedClientesIndexRoute,
+  AuthenticatedOsIndexRoute: AuthenticatedOsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
