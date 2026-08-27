@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type Search = { cliente?: string };
+type Search = { cliente: string | undefined };
 
 export const Route = createFileRoute("/_authenticated/aparelhos/novo")({
   validateSearch: (search: Record<string, unknown>): Search => ({
