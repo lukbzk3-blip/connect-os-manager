@@ -110,7 +110,10 @@ export function ClienteForm({ clienteId, initial }: { clienteId?: string; initia
         .select("id")
         .single();
       setSaving(false);
-      if (error) return toast.error(`Erro ao cadastrar: ${error.message}`);
+      if (error) {
+        toast.error(`Erro ao cadastrar: ${error.message}`);
+        return;
+      }
       queryClient.invalidateQueries({ queryKey: ["clientes"] });
       toast.success("Cliente cadastrado.");
       navigate({ to: "/clientes/$id", params: { id: data.id } });
