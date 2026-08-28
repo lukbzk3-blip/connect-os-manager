@@ -41,7 +41,7 @@ function NovaOS() {
   const search = Route.useSearch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { user, profile } = useAuth();
+  const { userId, perfil } = useAuth();
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     cliente_id: search.cliente ?? "",
@@ -103,9 +103,9 @@ function NovaOS() {
         valor_mao_obra: num(form.valor_mao_obra),
         desconto: num(form.desconto),
         valor_total: total,
-        tecnico_id: user?.id ?? null,
-        tecnico_nome: profile?.nome ?? null,
-        created_by: user?.id ?? null,
+        tecnico_id: userId,
+        tecnico_nome: perfil?.nome ?? null,
+        created_by: userId,
       })
       .select("id")
       .single();
