@@ -19,6 +19,7 @@ import { Route as AuthenticatedClientesIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedClientesIdRouteImport } from './routes/_authenticated/clientes.$id'
 import { Route as AuthenticatedClientesNovoRouteImport } from './routes/_authenticated/clientes.novo'
 import { Route as AuthenticatedOsIndexRouteImport } from './routes/_authenticated/os.index'
+import { Route as AuthenticatedOsIdRouteImport } from './routes/_authenticated/os.$id'
 import { Route as AuthenticatedOsNovoRouteImport } from './routes/_authenticated/os.novo'
 import { Route as AuthenticatedClientesIdEditarRouteImport } from './routes/_authenticated/clientes.$id.editar'
 
@@ -75,6 +76,11 @@ const AuthenticatedOsIndexRoute = AuthenticatedOsIndexRouteImport.update({
   path: '/os/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOsIdRoute = AuthenticatedOsIdRouteImport.update({
+  id: '/os/$id',
+  path: '/os/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedOsNovoRoute = AuthenticatedOsNovoRouteImport.update({
   id: '/os/novo',
   path: '/os/novo',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/os/$id': typeof AuthenticatedOsIdRoute
   '/os/novo': typeof AuthenticatedOsNovoRoute
   '/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
   '/clientes/': typeof AuthenticatedClientesIndexRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/os/$id': typeof AuthenticatedOsIdRoute
   '/os/novo': typeof AuthenticatedOsNovoRoute
   '/aparelhos': typeof AuthenticatedAparelhosIndexRoute
   '/clientes': typeof AuthenticatedClientesIndexRoute
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/_authenticated/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/_authenticated/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/_authenticated/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/_authenticated/os/$id': typeof AuthenticatedOsIdRoute
   '/_authenticated/os/novo': typeof AuthenticatedOsNovoRoute
   '/_authenticated/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
   '/_authenticated/clientes/': typeof AuthenticatedClientesIndexRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/aparelhos/novo'
     | '/clientes/$id'
     | '/clientes/novo'
+    | '/os/$id'
     | '/os/novo'
     | '/aparelhos/'
     | '/clientes/'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/aparelhos/novo'
     | '/clientes/$id'
     | '/clientes/novo'
+    | '/os/$id'
     | '/os/novo'
     | '/aparelhos'
     | '/clientes'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/_authenticated/aparelhos/novo'
     | '/_authenticated/clientes/$id'
     | '/_authenticated/clientes/novo'
+    | '/_authenticated/os/$id'
     | '/_authenticated/os/novo'
     | '/_authenticated/aparelhos/'
     | '/_authenticated/clientes/'
@@ -249,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/os/$id': {
+      id: '/_authenticated/os/$id'
+      path: '/os/$id'
+      fullPath: '/os/$id'
+      preLoaderRoute: typeof AuthenticatedOsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/os/novo': {
       id: '/_authenticated/os/novo'
       path: '/os/novo'
@@ -285,6 +304,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAparelhosNovoRoute: typeof AuthenticatedAparelhosNovoRoute
   AuthenticatedClientesIdRoute: typeof AuthenticatedClientesIdRouteWithChildren
   AuthenticatedClientesNovoRoute: typeof AuthenticatedClientesNovoRoute
+  AuthenticatedOsIdRoute: typeof AuthenticatedOsIdRoute
   AuthenticatedOsNovoRoute: typeof AuthenticatedOsNovoRoute
   AuthenticatedAparelhosIndexRoute: typeof AuthenticatedAparelhosIndexRoute
   AuthenticatedClientesIndexRoute: typeof AuthenticatedClientesIndexRoute
@@ -296,6 +316,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAparelhosNovoRoute: AuthenticatedAparelhosNovoRoute,
   AuthenticatedClientesIdRoute: AuthenticatedClientesIdRouteWithChildren,
   AuthenticatedClientesNovoRoute: AuthenticatedClientesNovoRoute,
+  AuthenticatedOsIdRoute: AuthenticatedOsIdRoute,
   AuthenticatedOsNovoRoute: AuthenticatedOsNovoRoute,
   AuthenticatedAparelhosIndexRoute: AuthenticatedAparelhosIndexRoute,
   AuthenticatedClientesIndexRoute: AuthenticatedClientesIndexRoute,

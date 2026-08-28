@@ -41,7 +41,7 @@ export const Route = createFileRoute("/_authenticated/os/$id")({
   component: OsDetalhe,
 });
 
-function Linha({ label, value }: { label: string; value?: string | null }) {
+function Linha({ label, value }: { label: string; value?: string | null | undefined }) {
   if (!value) return null;
   return (
     <div className="flex justify-between gap-3 py-1.5 text-sm">
@@ -71,7 +71,7 @@ function OsDetalhe() {
     },
   });
 
-  async function atualizar(patch: Record<string, unknown>, msg: string) {
+  async function atualizar(patch: Record<string, string | number | null>, msg: string) {
     const { error } = await supabase.from("ordens_servico").update(patch).eq("id", id);
     if (error) {
       toast.error(`Erro ao atualizar: ${error.message}`);
