@@ -5,6 +5,7 @@ import { ArrowLeft, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
+import type { TablesUpdate } from "@/integrations/supabase/types";
 import { PageHeader, EmptyState } from "@/components/PageHeader";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
@@ -71,7 +72,7 @@ function OsDetalhe() {
     },
   });
 
-  async function atualizar(patch: Record<string, string | number | null>, msg: string) {
+  async function atualizar(patch: TablesUpdate<"ordens_servico">, msg: string) {
     const { error } = await supabase.from("ordens_servico").update(patch).eq("id", id);
     if (error) {
       toast.error(`Erro ao atualizar: ${error.message}`);
@@ -143,7 +144,7 @@ function OsDetalhe() {
             <h2 className="mb-2 text-sm font-semibold">Atendimento</h2>
             <div className="mb-3">
               <Label>Status</Label>
-              <Select value={os.status} onValueChange={(v) => atualizar({ status: v }, "Status atualizado.")}>
+              <Select value={os.status} onValueChange={(v) => atualizar({ status: v as OsStatus }, "Status atualizado.")}>
                 <SelectTrigger className="mt-1.5 h-11">
                   <SelectValue />
                 </SelectTrigger>
@@ -160,7 +161,7 @@ function OsDetalhe() {
               <Label>Forma de pagamento</Label>
               <Select
                 value={os.forma_pagamento ?? ""}
-                onValueChange={(v) => atualizar({ forma_pagamento: v }, "Pagamento atualizado.")}
+                onValueChange={(v) => atualizar({ forma_pagamento: v as FormaPagamento }, "Pagamento atualizado.")}
               >
                 <SelectTrigger className="mt-1.5 h-11">
                   <SelectValue placeholder="Não informado" />
