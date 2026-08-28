@@ -18,6 +18,9 @@ import { Route as AuthenticatedAparelhosNovoRouteImport } from './routes/_authen
 import { Route as AuthenticatedClientesIndexRouteImport } from './routes/_authenticated/clientes.index'
 import { Route as AuthenticatedClientesIdRouteImport } from './routes/_authenticated/clientes.$id'
 import { Route as AuthenticatedClientesNovoRouteImport } from './routes/_authenticated/clientes.novo'
+import { Route as AuthenticatedOrcamentosIndexRouteImport } from './routes/_authenticated/orcamentos.index'
+import { Route as AuthenticatedOrcamentosIdRouteImport } from './routes/_authenticated/orcamentos.$id'
+import { Route as AuthenticatedOrcamentosNovoRouteImport } from './routes/_authenticated/orcamentos.novo'
 import { Route as AuthenticatedOsIndexRouteImport } from './routes/_authenticated/os.index'
 import { Route as AuthenticatedOsIdRouteImport } from './routes/_authenticated/os.$id'
 import { Route as AuthenticatedOsNovoRouteImport } from './routes/_authenticated/os.novo'
@@ -71,6 +74,24 @@ const AuthenticatedClientesNovoRoute =
     path: '/clientes/novo',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedOrcamentosIndexRoute =
+  AuthenticatedOrcamentosIndexRouteImport.update({
+    id: '/orcamentos/',
+    path: '/orcamentos/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOrcamentosIdRoute =
+  AuthenticatedOrcamentosIdRouteImport.update({
+    id: '/orcamentos/$id',
+    path: '/orcamentos/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOrcamentosNovoRoute =
+  AuthenticatedOrcamentosNovoRouteImport.update({
+    id: '/orcamentos/novo',
+    path: '/orcamentos/novo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedOsIndexRoute = AuthenticatedOsIndexRouteImport.update({
   id: '/os/',
   path: '/os/',
@@ -100,10 +121,13 @@ export interface FileRoutesByFullPath {
   '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/orcamentos/$id': typeof AuthenticatedOrcamentosIdRoute
+  '/orcamentos/novo': typeof AuthenticatedOrcamentosNovoRoute
   '/os/$id': typeof AuthenticatedOsIdRoute
   '/os/novo': typeof AuthenticatedOsNovoRoute
   '/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
   '/clientes/': typeof AuthenticatedClientesIndexRoute
+  '/orcamentos/': typeof AuthenticatedOrcamentosIndexRoute
   '/os/': typeof AuthenticatedOsIndexRoute
   '/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
 }
@@ -114,10 +138,13 @@ export interface FileRoutesByTo {
   '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/orcamentos/$id': typeof AuthenticatedOrcamentosIdRoute
+  '/orcamentos/novo': typeof AuthenticatedOrcamentosNovoRoute
   '/os/$id': typeof AuthenticatedOsIdRoute
   '/os/novo': typeof AuthenticatedOsNovoRoute
   '/aparelhos': typeof AuthenticatedAparelhosIndexRoute
   '/clientes': typeof AuthenticatedClientesIndexRoute
+  '/orcamentos': typeof AuthenticatedOrcamentosIndexRoute
   '/os': typeof AuthenticatedOsIndexRoute
   '/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
 }
@@ -130,10 +157,13 @@ export interface FileRoutesById {
   '/_authenticated/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/_authenticated/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/_authenticated/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/_authenticated/orcamentos/$id': typeof AuthenticatedOrcamentosIdRoute
+  '/_authenticated/orcamentos/novo': typeof AuthenticatedOrcamentosNovoRoute
   '/_authenticated/os/$id': typeof AuthenticatedOsIdRoute
   '/_authenticated/os/novo': typeof AuthenticatedOsNovoRoute
   '/_authenticated/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
   '/_authenticated/clientes/': typeof AuthenticatedClientesIndexRoute
+  '/_authenticated/orcamentos/': typeof AuthenticatedOrcamentosIndexRoute
   '/_authenticated/os/': typeof AuthenticatedOsIndexRoute
   '/_authenticated/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
 }
@@ -146,10 +176,13 @@ export interface FileRouteTypes {
     | '/aparelhos/novo'
     | '/clientes/$id'
     | '/clientes/novo'
+    | '/orcamentos/$id'
+    | '/orcamentos/novo'
     | '/os/$id'
     | '/os/novo'
     | '/aparelhos/'
     | '/clientes/'
+    | '/orcamentos/'
     | '/os/'
     | '/clientes/$id/editar'
   fileRoutesByTo: FileRoutesByTo
@@ -160,10 +193,13 @@ export interface FileRouteTypes {
     | '/aparelhos/novo'
     | '/clientes/$id'
     | '/clientes/novo'
+    | '/orcamentos/$id'
+    | '/orcamentos/novo'
     | '/os/$id'
     | '/os/novo'
     | '/aparelhos'
     | '/clientes'
+    | '/orcamentos'
     | '/os'
     | '/clientes/$id/editar'
   id:
@@ -175,10 +211,13 @@ export interface FileRouteTypes {
     | '/_authenticated/aparelhos/novo'
     | '/_authenticated/clientes/$id'
     | '/_authenticated/clientes/novo'
+    | '/_authenticated/orcamentos/$id'
+    | '/_authenticated/orcamentos/novo'
     | '/_authenticated/os/$id'
     | '/_authenticated/os/novo'
     | '/_authenticated/aparelhos/'
     | '/_authenticated/clientes/'
+    | '/_authenticated/orcamentos/'
     | '/_authenticated/os/'
     | '/_authenticated/clientes/$id/editar'
   fileRoutesById: FileRoutesById
@@ -254,6 +293,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedClientesNovoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/orcamentos/': {
+      id: '/_authenticated/orcamentos/'
+      path: '/orcamentos'
+      fullPath: '/orcamentos/'
+      preLoaderRoute: typeof AuthenticatedOrcamentosIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/orcamentos/$id': {
+      id: '/_authenticated/orcamentos/$id'
+      path: '/orcamentos/$id'
+      fullPath: '/orcamentos/$id'
+      preLoaderRoute: typeof AuthenticatedOrcamentosIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/orcamentos/novo': {
+      id: '/_authenticated/orcamentos/novo'
+      path: '/orcamentos/novo'
+      fullPath: '/orcamentos/novo'
+      preLoaderRoute: typeof AuthenticatedOrcamentosNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/os/': {
       id: '/_authenticated/os/'
       path: '/os'
@@ -304,10 +364,13 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAparelhosNovoRoute: typeof AuthenticatedAparelhosNovoRoute
   AuthenticatedClientesIdRoute: typeof AuthenticatedClientesIdRouteWithChildren
   AuthenticatedClientesNovoRoute: typeof AuthenticatedClientesNovoRoute
+  AuthenticatedOrcamentosIdRoute: typeof AuthenticatedOrcamentosIdRoute
+  AuthenticatedOrcamentosNovoRoute: typeof AuthenticatedOrcamentosNovoRoute
   AuthenticatedOsIdRoute: typeof AuthenticatedOsIdRoute
   AuthenticatedOsNovoRoute: typeof AuthenticatedOsNovoRoute
   AuthenticatedAparelhosIndexRoute: typeof AuthenticatedAparelhosIndexRoute
   AuthenticatedClientesIndexRoute: typeof AuthenticatedClientesIndexRoute
+  AuthenticatedOrcamentosIndexRoute: typeof AuthenticatedOrcamentosIndexRoute
   AuthenticatedOsIndexRoute: typeof AuthenticatedOsIndexRoute
 }
 
@@ -316,10 +379,13 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAparelhosNovoRoute: AuthenticatedAparelhosNovoRoute,
   AuthenticatedClientesIdRoute: AuthenticatedClientesIdRouteWithChildren,
   AuthenticatedClientesNovoRoute: AuthenticatedClientesNovoRoute,
+  AuthenticatedOrcamentosIdRoute: AuthenticatedOrcamentosIdRoute,
+  AuthenticatedOrcamentosNovoRoute: AuthenticatedOrcamentosNovoRoute,
   AuthenticatedOsIdRoute: AuthenticatedOsIdRoute,
   AuthenticatedOsNovoRoute: AuthenticatedOsNovoRoute,
   AuthenticatedAparelhosIndexRoute: AuthenticatedAparelhosIndexRoute,
   AuthenticatedClientesIndexRoute: AuthenticatedClientesIndexRoute,
+  AuthenticatedOrcamentosIndexRoute: AuthenticatedOrcamentosIndexRoute,
   AuthenticatedOsIndexRoute: AuthenticatedOsIndexRoute,
 }
 
