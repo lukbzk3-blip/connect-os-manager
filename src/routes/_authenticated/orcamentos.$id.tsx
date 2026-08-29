@@ -49,7 +49,7 @@ export const Route = createFileRoute("/_authenticated/orcamentos/$id")({
   component: OrcamentoDetalhe,
 });
 
-function Linha({ label, value }: { label: string; value?: string | null }) {
+function Linha({ label, value }: { label: string; value?: string | null | undefined }) {
   if (!value) return null;
   return (
     <div className="flex justify-between gap-3 py-1.5 text-sm">
