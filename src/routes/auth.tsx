@@ -55,7 +55,7 @@ function AuthPage() {
   async function cadastrar(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: email.trim(),
       password: senha,
       options: {
@@ -72,7 +72,11 @@ function AuthPage() {
       );
       return;
     }
-    toast.success("Conta criada! Você já pode entrar.");
+    if (!data.session) {
+      toast.success("Conta criada! Confirme o e-mail enviado para poder entrar.");
+      return;
+    }
+    toast.success("Conta criada!");
     navigate({ to: "/dashboard" });
   }
 
