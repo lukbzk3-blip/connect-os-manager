@@ -44,7 +44,9 @@ function AuthPage() {
       toast.error(
         error.message.includes("Invalid login")
           ? "E-mail ou senha inválidos."
-          : `Não foi possível entrar: ${error.message}`,
+          : error.message.includes("Email not confirmed")
+            ? "Confirme seu e-mail antes de entrar (verifique sua caixa de entrada)."
+            : `Não foi possível entrar: ${error.message}`,
       );
       return;
     }
