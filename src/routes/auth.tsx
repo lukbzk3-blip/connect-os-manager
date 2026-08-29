@@ -11,7 +11,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const Route = createFileRoute("/auth")({
-  ssr: false,
   head: () => ({
     meta: [
       { title: "Entrar — CONNECT SISTEMAS" },
@@ -45,7 +44,9 @@ function AuthPage() {
       toast.error(
         error.message.includes("Invalid login")
           ? "E-mail ou senha inválidos."
-          : `Não foi possível entrar: ${error.message}`,
+          : error.message.includes("Email not confirmed")
+            ? "Confirme seu e-mail antes de entrar (verifique sua caixa de entrada)."
+            : `Não foi possível entrar: ${error.message}`,
       );
       return;
     }
@@ -56,7 +57,7 @@ function AuthPage() {
   async function cadastrar(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: email.trim(),
       password: senha,
       options: {
@@ -73,7 +74,11 @@ function AuthPage() {
       );
       return;
     }
-    toast.success("Conta criada! Você já pode entrar.");
+    if (!data.session) {
+      toast.success("Conta criada! Confirme o e-mail enviado para poder entrar.");
+      return;
+    }
+    toast.success("Conta criada!");
     navigate({ to: "/dashboard" });
   }
 
