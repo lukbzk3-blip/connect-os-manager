@@ -28,6 +28,7 @@ import { Route as AuthenticatedOsIndexRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedOsIdRouteImport } from './routes/_authenticated/os.$id'
 import { Route as AuthenticatedOsNovoRouteImport } from './routes/_authenticated/os.novo'
 import { Route as AuthenticatedRelatoriosIndexRouteImport } from './routes/_authenticated/relatorios.index'
+import { Route as AuthenticatedUsuariosIndexRouteImport } from './routes/_authenticated/usuarios.index'
 import { Route as AuthenticatedClientesIdEditarRouteImport } from './routes/_authenticated/clientes.$id.editar'
 import { Route as AuthenticatedOrcamentosIdEditarRouteImport } from './routes/_authenticated/orcamentos.$id.editar'
 
@@ -136,6 +137,12 @@ const AuthenticatedRelatoriosIndexRoute =
     path: '/relatorios/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedUsuariosIndexRoute =
+  AuthenticatedUsuariosIndexRouteImport.update({
+    id: '/usuarios/',
+    path: '/usuarios/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedClientesIdEditarRoute =
   AuthenticatedClientesIdEditarRouteImport.update({
     id: '/editar',
@@ -168,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/orcamentos/': typeof AuthenticatedOrcamentosIndexRoute
   '/os/': typeof AuthenticatedOsIndexRoute
   '/relatorios/': typeof AuthenticatedRelatoriosIndexRoute
+  '/usuarios/': typeof AuthenticatedUsuariosIndexRoute
   '/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
   '/orcamentos/$id/editar': typeof AuthenticatedOrcamentosIdEditarRoute
 }
@@ -190,6 +198,7 @@ export interface FileRoutesByTo {
   '/orcamentos': typeof AuthenticatedOrcamentosIndexRoute
   '/os': typeof AuthenticatedOsIndexRoute
   '/relatorios': typeof AuthenticatedRelatoriosIndexRoute
+  '/usuarios': typeof AuthenticatedUsuariosIndexRoute
   '/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
   '/orcamentos/$id/editar': typeof AuthenticatedOrcamentosIdEditarRoute
 }
@@ -214,6 +223,7 @@ export interface FileRoutesById {
   '/_authenticated/orcamentos/': typeof AuthenticatedOrcamentosIndexRoute
   '/_authenticated/os/': typeof AuthenticatedOsIndexRoute
   '/_authenticated/relatorios/': typeof AuthenticatedRelatoriosIndexRoute
+  '/_authenticated/usuarios/': typeof AuthenticatedUsuariosIndexRoute
   '/_authenticated/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
   '/_authenticated/orcamentos/$id/editar': typeof AuthenticatedOrcamentosIdEditarRoute
 }
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/orcamentos/'
     | '/os/'
     | '/relatorios/'
+    | '/usuarios/'
     | '/clientes/$id/editar'
     | '/orcamentos/$id/editar'
   fileRoutesByTo: FileRoutesByTo
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/orcamentos'
     | '/os'
     | '/relatorios'
+    | '/usuarios'
     | '/clientes/$id/editar'
     | '/orcamentos/$id/editar'
   id:
@@ -283,6 +295,7 @@ export interface FileRouteTypes {
     | '/_authenticated/orcamentos/'
     | '/_authenticated/os/'
     | '/_authenticated/relatorios/'
+    | '/_authenticated/usuarios/'
     | '/_authenticated/clientes/$id/editar'
     | '/_authenticated/orcamentos/$id/editar'
   fileRoutesById: FileRoutesById
@@ -428,6 +441,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRelatoriosIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/usuarios/': {
+      id: '/_authenticated/usuarios/'
+      path: '/usuarios'
+      fullPath: '/usuarios/'
+      preLoaderRoute: typeof AuthenticatedUsuariosIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/clientes/$id/editar': {
       id: '/_authenticated/clientes/$id/editar'
       path: '/editar'
@@ -490,6 +510,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOrcamentosIndexRoute: typeof AuthenticatedOrcamentosIndexRoute
   AuthenticatedOsIndexRoute: typeof AuthenticatedOsIndexRoute
   AuthenticatedRelatoriosIndexRoute: typeof AuthenticatedRelatoriosIndexRoute
+  AuthenticatedUsuariosIndexRoute: typeof AuthenticatedUsuariosIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -509,6 +530,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOrcamentosIndexRoute: AuthenticatedOrcamentosIndexRoute,
   AuthenticatedOsIndexRoute: AuthenticatedOsIndexRoute,
   AuthenticatedRelatoriosIndexRoute: AuthenticatedRelatoriosIndexRoute,
+  AuthenticatedUsuariosIndexRoute: AuthenticatedUsuariosIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
