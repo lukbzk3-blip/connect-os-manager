@@ -255,7 +255,7 @@ function FinanceiroPage() {
             <div>
               <Label>Forma de pagamento</Label>
               <Select
-                value={form.forma_pagamento || undefined}
+                value={form.forma_pagamento}
                 onValueChange={(v) => setForm((f) => ({ ...f, forma_pagamento: v as FormaPagamento }))}
               >
                 <SelectTrigger className="h-11">
