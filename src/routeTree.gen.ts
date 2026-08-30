@@ -18,12 +18,18 @@ import { Route as AuthenticatedAparelhosNovoRouteImport } from './routes/_authen
 import { Route as AuthenticatedClientesIndexRouteImport } from './routes/_authenticated/clientes.index'
 import { Route as AuthenticatedClientesIdRouteImport } from './routes/_authenticated/clientes.$id'
 import { Route as AuthenticatedClientesNovoRouteImport } from './routes/_authenticated/clientes.novo'
+import { Route as AuthenticatedConfiguracoesIndexRouteImport } from './routes/_authenticated/configuracoes.index'
+import { Route as AuthenticatedEstoqueIndexRouteImport } from './routes/_authenticated/estoque.index'
+import { Route as AuthenticatedEstoqueNovoRouteImport } from './routes/_authenticated/estoque.novo'
+import { Route as AuthenticatedFinanceiroIndexRouteImport } from './routes/_authenticated/financeiro.index'
 import { Route as AuthenticatedOrcamentosIndexRouteImport } from './routes/_authenticated/orcamentos.index'
 import { Route as AuthenticatedOrcamentosIdRouteImport } from './routes/_authenticated/orcamentos.$id'
 import { Route as AuthenticatedOrcamentosNovoRouteImport } from './routes/_authenticated/orcamentos.novo'
 import { Route as AuthenticatedOsIndexRouteImport } from './routes/_authenticated/os.index'
 import { Route as AuthenticatedOsIdRouteImport } from './routes/_authenticated/os.$id'
 import { Route as AuthenticatedOsNovoRouteImport } from './routes/_authenticated/os.novo'
+import { Route as AuthenticatedRelatoriosIndexRouteImport } from './routes/_authenticated/relatorios.index'
+import { Route as AuthenticatedUsuariosIndexRouteImport } from './routes/_authenticated/usuarios.index'
 import { Route as AuthenticatedClientesIdEditarRouteImport } from './routes/_authenticated/clientes.$id.editar'
 import { Route as AuthenticatedOrcamentosIdEditarRouteImport } from './routes/_authenticated/orcamentos.$id.editar'
 
@@ -75,6 +81,30 @@ const AuthenticatedClientesNovoRoute =
     path: '/clientes/novo',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedConfiguracoesIndexRoute =
+  AuthenticatedConfiguracoesIndexRouteImport.update({
+    id: '/configuracoes/',
+    path: '/configuracoes/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEstoqueIndexRoute =
+  AuthenticatedEstoqueIndexRouteImport.update({
+    id: '/estoque/',
+    path: '/estoque/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEstoqueNovoRoute =
+  AuthenticatedEstoqueNovoRouteImport.update({
+    id: '/estoque/novo',
+    path: '/estoque/novo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFinanceiroIndexRoute =
+  AuthenticatedFinanceiroIndexRouteImport.update({
+    id: '/financeiro/',
+    path: '/financeiro/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedOrcamentosIndexRoute =
   AuthenticatedOrcamentosIndexRouteImport.update({
     id: '/orcamentos/',
@@ -108,6 +138,18 @@ const AuthenticatedOsNovoRoute = AuthenticatedOsNovoRouteImport.update({
   path: '/os/novo',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRelatoriosIndexRoute =
+  AuthenticatedRelatoriosIndexRouteImport.update({
+    id: '/relatorios/',
+    path: '/relatorios/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedUsuariosIndexRoute =
+  AuthenticatedUsuariosIndexRouteImport.update({
+    id: '/usuarios/',
+    path: '/usuarios/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedClientesIdEditarRoute =
   AuthenticatedClientesIdEditarRouteImport.update({
     id: '/editar',
@@ -128,14 +170,20 @@ export interface FileRoutesByFullPath {
   '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/estoque/novo': typeof AuthenticatedEstoqueNovoRoute
   '/orcamentos/$id': typeof AuthenticatedOrcamentosIdRouteWithChildren
   '/orcamentos/novo': typeof AuthenticatedOrcamentosNovoRoute
   '/os/$id': typeof AuthenticatedOsIdRoute
   '/os/novo': typeof AuthenticatedOsNovoRoute
   '/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
   '/clientes/': typeof AuthenticatedClientesIndexRoute
+  '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
+  '/estoque/': typeof AuthenticatedEstoqueIndexRoute
+  '/financeiro/': typeof AuthenticatedFinanceiroIndexRoute
   '/orcamentos/': typeof AuthenticatedOrcamentosIndexRoute
   '/os/': typeof AuthenticatedOsIndexRoute
+  '/relatorios/': typeof AuthenticatedRelatoriosIndexRoute
+  '/usuarios/': typeof AuthenticatedUsuariosIndexRoute
   '/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
   '/orcamentos/$id/editar': typeof AuthenticatedOrcamentosIdEditarRoute
 }
@@ -146,14 +194,20 @@ export interface FileRoutesByTo {
   '/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/estoque/novo': typeof AuthenticatedEstoqueNovoRoute
   '/orcamentos/$id': typeof AuthenticatedOrcamentosIdRouteWithChildren
   '/orcamentos/novo': typeof AuthenticatedOrcamentosNovoRoute
   '/os/$id': typeof AuthenticatedOsIdRoute
   '/os/novo': typeof AuthenticatedOsNovoRoute
   '/aparelhos': typeof AuthenticatedAparelhosIndexRoute
   '/clientes': typeof AuthenticatedClientesIndexRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
+  '/estoque': typeof AuthenticatedEstoqueIndexRoute
+  '/financeiro': typeof AuthenticatedFinanceiroIndexRoute
   '/orcamentos': typeof AuthenticatedOrcamentosIndexRoute
   '/os': typeof AuthenticatedOsIndexRoute
+  '/relatorios': typeof AuthenticatedRelatoriosIndexRoute
+  '/usuarios': typeof AuthenticatedUsuariosIndexRoute
   '/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
   '/orcamentos/$id/editar': typeof AuthenticatedOrcamentosIdEditarRoute
 }
@@ -166,14 +220,20 @@ export interface FileRoutesById {
   '/_authenticated/aparelhos/novo': typeof AuthenticatedAparelhosNovoRoute
   '/_authenticated/clientes/$id': typeof AuthenticatedClientesIdRouteWithChildren
   '/_authenticated/clientes/novo': typeof AuthenticatedClientesNovoRoute
+  '/_authenticated/estoque/novo': typeof AuthenticatedEstoqueNovoRoute
   '/_authenticated/orcamentos/$id': typeof AuthenticatedOrcamentosIdRouteWithChildren
   '/_authenticated/orcamentos/novo': typeof AuthenticatedOrcamentosNovoRoute
   '/_authenticated/os/$id': typeof AuthenticatedOsIdRoute
   '/_authenticated/os/novo': typeof AuthenticatedOsNovoRoute
   '/_authenticated/aparelhos/': typeof AuthenticatedAparelhosIndexRoute
   '/_authenticated/clientes/': typeof AuthenticatedClientesIndexRoute
+  '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
+  '/_authenticated/estoque/': typeof AuthenticatedEstoqueIndexRoute
+  '/_authenticated/financeiro/': typeof AuthenticatedFinanceiroIndexRoute
   '/_authenticated/orcamentos/': typeof AuthenticatedOrcamentosIndexRoute
   '/_authenticated/os/': typeof AuthenticatedOsIndexRoute
+  '/_authenticated/relatorios/': typeof AuthenticatedRelatoriosIndexRoute
+  '/_authenticated/usuarios/': typeof AuthenticatedUsuariosIndexRoute
   '/_authenticated/clientes/$id/editar': typeof AuthenticatedClientesIdEditarRoute
   '/_authenticated/orcamentos/$id/editar': typeof AuthenticatedOrcamentosIdEditarRoute
 }
@@ -186,14 +246,20 @@ export interface FileRouteTypes {
     | '/aparelhos/novo'
     | '/clientes/$id'
     | '/clientes/novo'
+    | '/estoque/novo'
     | '/orcamentos/$id'
     | '/orcamentos/novo'
     | '/os/$id'
     | '/os/novo'
     | '/aparelhos/'
     | '/clientes/'
+    | '/configuracoes/'
+    | '/estoque/'
+    | '/financeiro/'
     | '/orcamentos/'
     | '/os/'
+    | '/relatorios/'
+    | '/usuarios/'
     | '/clientes/$id/editar'
     | '/orcamentos/$id/editar'
   fileRoutesByTo: FileRoutesByTo
@@ -204,14 +270,20 @@ export interface FileRouteTypes {
     | '/aparelhos/novo'
     | '/clientes/$id'
     | '/clientes/novo'
+    | '/estoque/novo'
     | '/orcamentos/$id'
     | '/orcamentos/novo'
     | '/os/$id'
     | '/os/novo'
     | '/aparelhos'
     | '/clientes'
+    | '/configuracoes'
+    | '/estoque'
+    | '/financeiro'
     | '/orcamentos'
     | '/os'
+    | '/relatorios'
+    | '/usuarios'
     | '/clientes/$id/editar'
     | '/orcamentos/$id/editar'
   id:
@@ -223,14 +295,20 @@ export interface FileRouteTypes {
     | '/_authenticated/aparelhos/novo'
     | '/_authenticated/clientes/$id'
     | '/_authenticated/clientes/novo'
+    | '/_authenticated/estoque/novo'
     | '/_authenticated/orcamentos/$id'
     | '/_authenticated/orcamentos/novo'
     | '/_authenticated/os/$id'
     | '/_authenticated/os/novo'
     | '/_authenticated/aparelhos/'
     | '/_authenticated/clientes/'
+    | '/_authenticated/configuracoes/'
+    | '/_authenticated/estoque/'
+    | '/_authenticated/financeiro/'
     | '/_authenticated/orcamentos/'
     | '/_authenticated/os/'
+    | '/_authenticated/relatorios/'
+    | '/_authenticated/usuarios/'
     | '/_authenticated/clientes/$id/editar'
     | '/_authenticated/orcamentos/$id/editar'
   fileRoutesById: FileRoutesById
@@ -306,6 +384,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedClientesNovoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/configuracoes/': {
+      id: '/_authenticated/configuracoes/'
+      path: '/configuracoes'
+      fullPath: '/configuracoes/'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/estoque/': {
+      id: '/_authenticated/estoque/'
+      path: '/estoque'
+      fullPath: '/estoque/'
+      preLoaderRoute: typeof AuthenticatedEstoqueIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/estoque/novo': {
+      id: '/_authenticated/estoque/novo'
+      path: '/estoque/novo'
+      fullPath: '/estoque/novo'
+      preLoaderRoute: typeof AuthenticatedEstoqueNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/financeiro/': {
+      id: '/_authenticated/financeiro/'
+      path: '/financeiro'
+      fullPath: '/financeiro/'
+      preLoaderRoute: typeof AuthenticatedFinanceiroIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/orcamentos/': {
       id: '/_authenticated/orcamentos/'
       path: '/orcamentos'
@@ -346,6 +452,20 @@ declare module '@tanstack/react-router' {
       path: '/os/novo'
       fullPath: '/os/novo'
       preLoaderRoute: typeof AuthenticatedOsNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/relatorios/': {
+      id: '/_authenticated/relatorios/'
+      path: '/relatorios'
+      fullPath: '/relatorios/'
+      preLoaderRoute: typeof AuthenticatedRelatoriosIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/usuarios/': {
+      id: '/_authenticated/usuarios/'
+      path: '/usuarios'
+      fullPath: '/usuarios/'
+      preLoaderRoute: typeof AuthenticatedUsuariosIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/clientes/$id/editar': {
@@ -398,14 +518,20 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAparelhosNovoRoute: typeof AuthenticatedAparelhosNovoRoute
   AuthenticatedClientesIdRoute: typeof AuthenticatedClientesIdRouteWithChildren
   AuthenticatedClientesNovoRoute: typeof AuthenticatedClientesNovoRoute
+  AuthenticatedEstoqueNovoRoute: typeof AuthenticatedEstoqueNovoRoute
   AuthenticatedOrcamentosIdRoute: typeof AuthenticatedOrcamentosIdRouteWithChildren
   AuthenticatedOrcamentosNovoRoute: typeof AuthenticatedOrcamentosNovoRoute
   AuthenticatedOsIdRoute: typeof AuthenticatedOsIdRoute
   AuthenticatedOsNovoRoute: typeof AuthenticatedOsNovoRoute
   AuthenticatedAparelhosIndexRoute: typeof AuthenticatedAparelhosIndexRoute
   AuthenticatedClientesIndexRoute: typeof AuthenticatedClientesIndexRoute
+  AuthenticatedConfiguracoesIndexRoute: typeof AuthenticatedConfiguracoesIndexRoute
+  AuthenticatedEstoqueIndexRoute: typeof AuthenticatedEstoqueIndexRoute
+  AuthenticatedFinanceiroIndexRoute: typeof AuthenticatedFinanceiroIndexRoute
   AuthenticatedOrcamentosIndexRoute: typeof AuthenticatedOrcamentosIndexRoute
   AuthenticatedOsIndexRoute: typeof AuthenticatedOsIndexRoute
+  AuthenticatedRelatoriosIndexRoute: typeof AuthenticatedRelatoriosIndexRoute
+  AuthenticatedUsuariosIndexRoute: typeof AuthenticatedUsuariosIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -413,14 +539,20 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAparelhosNovoRoute: AuthenticatedAparelhosNovoRoute,
   AuthenticatedClientesIdRoute: AuthenticatedClientesIdRouteWithChildren,
   AuthenticatedClientesNovoRoute: AuthenticatedClientesNovoRoute,
+  AuthenticatedEstoqueNovoRoute: AuthenticatedEstoqueNovoRoute,
   AuthenticatedOrcamentosIdRoute: AuthenticatedOrcamentosIdRouteWithChildren,
   AuthenticatedOrcamentosNovoRoute: AuthenticatedOrcamentosNovoRoute,
   AuthenticatedOsIdRoute: AuthenticatedOsIdRoute,
   AuthenticatedOsNovoRoute: AuthenticatedOsNovoRoute,
   AuthenticatedAparelhosIndexRoute: AuthenticatedAparelhosIndexRoute,
   AuthenticatedClientesIndexRoute: AuthenticatedClientesIndexRoute,
+  AuthenticatedConfiguracoesIndexRoute: AuthenticatedConfiguracoesIndexRoute,
+  AuthenticatedEstoqueIndexRoute: AuthenticatedEstoqueIndexRoute,
+  AuthenticatedFinanceiroIndexRoute: AuthenticatedFinanceiroIndexRoute,
   AuthenticatedOrcamentosIndexRoute: AuthenticatedOrcamentosIndexRoute,
   AuthenticatedOsIndexRoute: AuthenticatedOsIndexRoute,
+  AuthenticatedRelatoriosIndexRoute: AuthenticatedRelatoriosIndexRoute,
+  AuthenticatedUsuariosIndexRoute: AuthenticatedUsuariosIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

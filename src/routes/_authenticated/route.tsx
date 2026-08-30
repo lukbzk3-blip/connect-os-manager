@@ -1,4 +1,5 @@
 import { createFileRoute, Link, Outlet, redirect, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   BarChart3,
   Boxes,
@@ -52,14 +53,17 @@ const BOTTOM_NAV = NAV.slice(0, 5);
 function AppLayout() {
   const { perfil, email, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   const items = NAV.filter((i) => !i.adminOnly || isAdmin);
 
   async function sair() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth" });
+    navigate({ to: "/auth", replace: true });
   }
 
   const isActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
