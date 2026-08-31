@@ -51,7 +51,7 @@ const NAV: NavItem[] = [
 const BOTTOM_NAV = NAV.slice(0, 5);
 
 function AppLayout() {
-  const { perfil, email, isAdmin } = useAuth();
+  const { perfil, email, isAdmin, isLoading } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
