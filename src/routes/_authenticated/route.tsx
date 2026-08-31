@@ -51,7 +51,7 @@ const NAV: NavItem[] = [
 const BOTTOM_NAV = NAV.slice(0, 5);
 
 function AppLayout() {
-  const { perfil, email, isAdmin } = useAuth();
+  const { perfil, email, isAdmin, isLoading } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -67,6 +67,25 @@ function AppLayout() {
   }
 
   const isActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
+
+  if (!isLoading && perfil && !perfil.ativo) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-secondary p-6">
+        <div className="w-full max-w-sm rounded-xl border bg-card p-6 text-center shadow-card">
+          <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-secondary">
+            <Wrench className="size-6 text-muted-foreground" />
+          </div>
+          <h1 className="text-lg font-bold">Acesso bloqueado</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Seu usuário foi desativado por um administrador. Fale com o responsável para reativar o acesso.
+          </p>
+          <Button className="mt-5 h-11 w-full" onClick={sair}>
+            <LogOut className="size-4.5" /> Sair
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen w-full bg-secondary">
