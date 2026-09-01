@@ -600,6 +600,7 @@ export type Database = {
       }
       is_admin: { Args: never; Returns: boolean }
       is_ativo: { Args: never; Returns: boolean }
+      transferir_admin: { Args: { novo_admin: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "funcionario"
