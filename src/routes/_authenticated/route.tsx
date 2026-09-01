@@ -90,7 +90,7 @@ function AppLayout() {
   return (
     <div className="flex min-h-screen w-full bg-secondary">
       {/* Sidebar desktop */}
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground lg:flex">
+      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground lg:flex">
         <div className="flex items-center gap-3 border-b border-sidebar-border px-5 py-5">
           <div className="flex size-9 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
             <Wrench className="size-5" />
