@@ -78,6 +78,7 @@ export type Database = {
       }
       clientes: {
         Row: {
+          ativo: boolean
           bairro: string | null
           cep: string | null
           cidade: string | null
@@ -97,6 +98,7 @@ export type Database = {
           whatsapp: string | null
         }
         Insert: {
+          ativo?: boolean
           bairro?: string | null
           cep?: string | null
           cidade?: string | null
@@ -116,6 +118,7 @@ export type Database = {
           whatsapp?: string | null
         }
         Update: {
+          ativo?: boolean
           bairro?: string | null
           cep?: string | null
           cidade?: string | null
@@ -357,6 +360,8 @@ export type Database = {
       ordens_servico: {
         Row: {
           aparelho_id: string | null
+          cancelado_em: string | null
+          cancelado_por: string | null
           cliente_id: string
           created_at: string
           created_by: string | null
@@ -366,6 +371,7 @@ export type Database = {
           diagnostico: string | null
           forma_pagamento: Database["public"]["Enums"]["forma_pagamento"] | null
           id: string
+          motivo_cancelamento: string | null
           numero: number
           observacoes: string | null
           previsao_entrega: string | null
@@ -380,6 +386,8 @@ export type Database = {
         }
         Insert: {
           aparelho_id?: string | null
+          cancelado_em?: string | null
+          cancelado_por?: string | null
           cliente_id: string
           created_at?: string
           created_by?: string | null
@@ -391,6 +399,7 @@ export type Database = {
             | Database["public"]["Enums"]["forma_pagamento"]
             | null
           id?: string
+          motivo_cancelamento?: string | null
           numero?: number
           observacoes?: string | null
           previsao_entrega?: string | null
@@ -405,6 +414,8 @@ export type Database = {
         }
         Update: {
           aparelho_id?: string | null
+          cancelado_em?: string | null
+          cancelado_por?: string | null
           cliente_id?: string
           created_at?: string
           created_by?: string | null
@@ -416,6 +427,7 @@ export type Database = {
             | Database["public"]["Enums"]["forma_pagamento"]
             | null
           id?: string
+          motivo_cancelamento?: string | null
           numero?: number
           observacoes?: string | null
           previsao_entrega?: string | null
