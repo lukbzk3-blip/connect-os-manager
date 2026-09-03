@@ -24,14 +24,16 @@ export const Route = createFileRoute("/_authenticated/clientes/")({
 
 function ClientesPage() {
   const [busca, setBusca] = useState("");
+  const [mostrarInativos, setMostrarInativos] = useState(false);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["clientes", busca],
+    queryKey: ["clientes", busca, mostrarInativos],
     queryFn: async () => {
       let q = supabase
         .from("clientes")
-        .select("id, nome, telefone, whatsapp, cpf_cnpj, cidade, created_at")
+        .select("id, nome, telefone, whatsapp, cpf_cnpj, cidade, ativo, created_at")
         .order("nome");
+      if (!mostrarInativos) q = q.eq("ativo", true);
       const termo = busca.trim();
       if (termo) {
         const like = `%${termo}%`;
@@ -59,7 +61,7 @@ function ClientesPage() {
         }
       />
 
-      <div className="relative mb-4">
+      <div className="relative mb-3">
         <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={busca}
@@ -67,6 +69,25 @@ function ClientesPage() {
           placeholder="Buscar cliente..."
           className="h-11 pl-9"
         />
+      </div>
+
+      <div className="mb-4 flex gap-2">
+        <button
+          onClick={() => setMostrarInativos(false)}
+          className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+            !mostrarInativos ? "border-primary bg-primary text-primary-foreground" : "bg-card text-muted-foreground"
+          }`}
+        >
+          Ativos
+        </button>
+        <button
+          onClick={() => setMostrarInativos(true)}
+          className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+            mostrarInativos ? "border-primary bg-primary text-primary-foreground" : "bg-card text-muted-foreground"
+          }`}
+        >
+          Todos (inclui inativos)
+        </button>
       </div>
 
       {isLoading ? (
@@ -88,7 +109,14 @@ function ClientesPage() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="truncate font-medium">{c.nome}</p>
+                  <p className="truncate font-medium">
+                    {c.nome}
+                    {!c.ativo ? (
+                      <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                        Inativo
+                      </span>
+                    ) : null}
+                  </p>
                   <p className="truncate text-xs text-muted-foreground">
                     {[c.telefone || c.whatsapp, c.cpf_cnpj, c.cidade].filter(Boolean).join(" · ") ||
                       "Sem contato cadastrado"}

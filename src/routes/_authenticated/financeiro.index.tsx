@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ArrowDownCircle, ArrowUpCircle, Plus, Trash2 } from "lucide-react";
+import { ArrowDownCircle, ArrowUpCircle, FileText, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
@@ -12,9 +12,11 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { formatBRL, formatDate } from "@/lib/format";
+import { formatBRL, formatDate, formatDateTime } from "@/lib/format";
+import { escapeHtml, imprimirDocumento } from "@/lib/pdf";
 import { FORMAS_PAGAMENTO, FORMA_PAGAMENTO_LABEL, type FormaPagamento } from "@/lib/constants";
 import { useAuth } from "@/hooks/useAuth";
+
 
 export const Route = createFileRoute("/_authenticated/financeiro/")({
   head: () => ({
@@ -113,17 +115,118 @@ function FinanceiroPage() {
   const entradas = lista.filter((l) => l.tipo === "entrada").reduce((s, l) => s + Number(l.valor), 0);
   const saidas = lista.filter((l) => l.tipo === "saida").reduce((s, l) => s + Number(l.valor), 0);
 
+  function gerarRelatorio() {
+    if (lista.length === 0) {
+      toast.error("Não há lançamentos no período selecionado.");
+      return;
+    }
+
+    const porCategoria = new Map<string, { entradas: number; saidas: number }>();
+    for (const l of lista) {
+      const chave = l.categoria?.trim() || "Sem categoria";
+      const atual = porCategoria.get(chave) ?? { entradas: 0, saidas: 0 };
+      if (l.tipo === "entrada") atual.entradas += Number(l.valor);
+      else atual.saidas += Number(l.valor);
+      porCategoria.set(chave, atual);
+    }
+
+    const linhasCategoria = [...porCategoria.entries()]
+      .sort((a, b) => b[1].entradas - b[1].saidas - (a[1].entradas - a[1].saidas))
+      .map(
+        ([nome, v]) => `<tr>
+          <td>${escapeHtml(nome)}</td>
+          <td class="num">${escapeHtml(formatBRL(v.entradas))}</td>
+          <td class="num">${escapeHtml(formatBRL(v.saidas))}</td>
+          <td class="num">${escapeHtml(formatBRL(v.entradas - v.saidas))}</td>
+        </tr>`,
+      )
+      .join("");
+
+    const linhasLancamentos = [...lista]
+      .sort((a, b) => a.data.localeCompare(b.data))
+      .map(
+        (l) => `<tr>
+          <td>${escapeHtml(formatDate(l.data))}</td>
+          <td>${escapeHtml(l.descricao)}</td>
+          <td>${escapeHtml(l.categoria || "—")}</td>
+          <td>${escapeHtml(
+            l.forma_pagamento ? FORMA_PAGAMENTO_LABEL[l.forma_pagamento as FormaPagamento] : "—",
+          )}</td>
+          <td class="num">${l.tipo === "entrada" ? escapeHtml(formatBRL(l.valor)) : "—"}</td>
+          <td class="num">${l.tipo === "saida" ? escapeHtml(formatBRL(l.valor)) : "—"}</td>
+        </tr>`,
+      )
+      .join("");
+
+    const corpo = `
+      <div class="doc-header">
+        <div>
+          <div class="brand">CONNECT ASSISTÊNCIA TÉCNICA
+            <small>CONNECT SISTEMAS · Relatório financeiro</small>
+          </div>
+        </div>
+        <div class="doc-title">
+          <h2>Relatório Financeiro</h2>
+          <span>Período: ${escapeHtml(formatDate(de))} a ${escapeHtml(formatDate(ate))}</span>
+        </div>
+      </div>
+
+      <section>
+        <h3>Resumo do período</h3>
+        <div class="cards">
+          <div class="card"><span>Total de receitas</span><strong>${escapeHtml(formatBRL(entradas))}</strong></div>
+          <div class="card"><span>Total de despesas</span><strong>${escapeHtml(formatBRL(saidas))}</strong></div>
+          <div class="card"><span>Saldo do período</span><strong>${escapeHtml(formatBRL(entradas - saidas))}</strong></div>
+          <div class="card"><span>Lançamentos</span><strong>${lista.length}</strong></div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Por categoria</h3>
+        <table>
+          <thead><tr><th>Categoria</th><th class="num">Receitas</th><th class="num">Despesas</th><th class="num">Saldo</th></tr></thead>
+          <tbody>${linhasCategoria}</tbody>
+        </table>
+      </section>
+
+      <section>
+        <h3>Detalhamento dos lançamentos</h3>
+        <table>
+          <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Pagamento</th><th class="num">Receita</th><th class="num">Despesa</th></tr></thead>
+          <tbody>${linhasLancamentos}</tbody>
+          <tfoot>
+            <tr>
+              <th colspan="4">Totais</th>
+              <th class="num">${escapeHtml(formatBRL(entradas))}</th>
+              <th class="num">${escapeHtml(formatBRL(saidas))}</th>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+      <footer>Documento gerado em ${escapeHtml(formatDateTime(new Date()))} — uso interno.</footer>
+    `;
+
+    imprimirDocumento(`Relatório Financeiro ${formatDate(de)} a ${formatDate(ate)}`, corpo);
+  }
+
   return (
     <div>
       <PageHeader
         title="Financeiro"
         description="Entradas, saídas e saldo do período."
         action={
-          <Button className="h-10" onClick={() => setAberto(true)}>
-            <Plus className="mr-1.5 size-4" /> Lançamento
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="outline" className="h-10" onClick={gerarRelatorio}>
+              <FileText className="mr-1.5 size-4" /> Relatório PDF
+            </Button>
+            <Button className="h-10" onClick={() => setAberto(true)}>
+              <Plus className="mr-1.5 size-4" /> Lançamento
+            </Button>
+          </div>
         }
       />
+
 
       <div className="mb-3 grid grid-cols-2 gap-2">
         <div>
