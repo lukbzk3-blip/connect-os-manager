@@ -55,7 +55,7 @@ function ClienteDetalhe() {
   const { data, isLoading } = useQuery({
     queryKey: ["cliente", id],
     queryFn: async () => {
-      const [cliente, aparelhos, ordens] = await Promise.all([
+      const [cliente, aparelhos, ordens, lancamentos] = await Promise.all([
         supabase.from("clientes").select("*").eq("id", id).maybeSingle(),
         supabase.from("aparelhos").select("*").eq("cliente_id", id).order("created_at", { ascending: false }),
         supabase
@@ -63,26 +63,42 @@ function ClienteDetalhe() {
           .select("id, numero, status, valor_total, data_entrada, servico_realizado, aparelhos(marca, modelo)")
           .eq("cliente_id", id)
           .order("created_at", { ascending: false }),
+        supabase.from("lancamentos").select("id", { count: "exact", head: true }).eq("cliente_id", id),
       ]);
       if (cliente.error) throw cliente.error;
       return {
         cliente: cliente.data,
         aparelhos: aparelhos.data ?? [],
         ordens: ordens.data ?? [],
+        // Funcionários não enxergam o financeiro: nesse caso o count vem nulo.
+        lancamentos: lancamentos.count ?? 0,
       };
     },
   });
 
-  async function excluir() {
+  async function excluirDefinitivo() {
     const { error } = await supabase.from("clientes").delete().eq("id", id);
     if (error) {
       toast.error(`Não foi possível excluir: ${error.message}`);
       return;
     }
     queryClient.invalidateQueries({ queryKey: ["clientes"] });
+    queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     toast.success("Cliente excluído.");
     navigate({ to: "/clientes" });
   }
+
+  async function definirAtivo(ativo: boolean) {
+    const { error } = await supabase.from("clientes").update({ ativo }).eq("id", id);
+    if (error) {
+      toast.error(`Não foi possível atualizar: ${error.message}`);
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["clientes"] });
+    queryClient.invalidateQueries({ queryKey: ["cliente", id] });
+    toast.success(ativo ? "Cliente reativado." : "Cliente inativado. O histórico foi preservado.");
+  }
+
 
   if (isLoading) return <Skeleton className="h-64 rounded-xl" />;
   if (!data?.cliente) return <EmptyState title="Cliente não encontrado" />;
