@@ -29,7 +29,7 @@ const BASE_CSS = `
   .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .card { border: 1px solid #dfe6e2; border-radius: 8px; padding: 8px; }
   .card span { display: block; color: #64726b; font-size: 10px; text-transform: uppercase; }
-  .card b { font-size: 13px; }
+  .card strong { font-size: 13px; }
   .assinaturas { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
   .assinatura { border-top: 1px solid #90a09a; padding-top: 4px; text-align: center; color: #64726b; font-size: 11px; }
   footer { margin-top: 18px; border-top: 1px solid #dfe6e2; padding-top: 8px; color: #8b9891; font-size: 10px; text-align: center; }

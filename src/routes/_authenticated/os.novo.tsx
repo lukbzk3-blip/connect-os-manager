@@ -60,7 +60,12 @@ function NovaOS() {
   const { data: clientes } = useQuery({
     queryKey: ["clientes-select"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("clientes").select("id, nome").order("nome").limit(500);
+      const { data, error } = await supabase
+        .from("clientes")
+        .select("id, nome")
+        .eq("ativo", true)
+        .order("nome")
+        .limit(500);
       if (error) throw error;
       return data;
     },
