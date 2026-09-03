@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ArrowDownCircle, ArrowUpCircle, Plus, Trash2 } from "lucide-react";
+import { ArrowDownCircle, ArrowUpCircle, FileText, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
@@ -12,9 +12,11 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { formatBRL, formatDate } from "@/lib/format";
+import { formatBRL, formatDate, formatDateTime } from "@/lib/format";
+import { escapeHtml, imprimirDocumento } from "@/lib/pdf";
 import { FORMAS_PAGAMENTO, FORMA_PAGAMENTO_LABEL, type FormaPagamento } from "@/lib/constants";
 import { useAuth } from "@/hooks/useAuth";
+
 
 export const Route = createFileRoute("/_authenticated/financeiro/")({
   head: () => ({
