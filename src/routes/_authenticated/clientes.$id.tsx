@@ -109,6 +109,14 @@ function ClienteDetalhe() {
     .filter(Boolean)
     .join(", ");
 
+  const vinculos = [
+    data.ordens.length ? `${data.ordens.length} ordem(ns) de serviço` : null,
+    data.aparelhos.length ? `${data.aparelhos.length} aparelho(s)` : null,
+    data.lancamentos ? `${data.lancamentos} lançamento(s) financeiro(s)` : null,
+  ].filter(Boolean) as string[];
+  const temHistorico = vinculos.length > 0;
+  const identificacao = [c.telefone || c.whatsapp, c.email].filter(Boolean).join(" · ");
+
   return (
     <div>
       <Link to="/clientes" className="mb-3 inline-flex items-center gap-1 text-sm text-muted-foreground">
@@ -117,7 +125,7 @@ function ClienteDetalhe() {
 
       <PageHeader
         title={c.nome}
-        description={`Cliente desde ${formatDate(c.created_at)}`}
+        description={`Cliente desde ${formatDate(c.created_at)}${c.ativo ? "" : " · Inativo"}`}
         action={
           <div className="flex gap-2">
             <Button asChild variant="outline" className="h-10">
@@ -125,24 +133,51 @@ function ClienteDetalhe() {
                 <Pencil className="mr-1.5 size-4" /> Editar
               </Link>
             </Button>
-            {isAdmin ? (
+            {isAdmin && !c.ativo ? (
+              <Button variant="outline" className="h-10" onClick={() => definirAtivo(true)}>
+                Reativar cliente
+              </Button>
+            ) : null}
+            {isAdmin && c.ativo ? (
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="outline" size="icon" className="h-10 text-destructive">
-                    <Trash2 className="size-4" />
+                  <Button variant="outline" className="h-10 text-destructive">
+                    <Trash2 className="mr-1.5 size-4" /> Excluir cliente
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Excluir cliente?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Os aparelhos vinculados também serão removidos. Ordens de serviço existentes impedem a
-                      exclusão.
+                    <AlertDialogTitle>
+                      {temHistorico ? "Inativar cliente?" : "Excluir cliente?"}
+                    </AlertDialogTitle>
+                    <AlertDialogDescription asChild>
+                      <div className="space-y-2 text-left">
+                        <p>
+                          Cliente: <strong>{c.nome}</strong>
+                          {identificacao ? <> — {identificacao}</> : null}
+                        </p>
+                        {temHistorico ? (
+                          <p>
+                            Este cliente possui {vinculos.join(", ")}. Para preservar o histórico, ele será{" "}
+                            <strong>inativado</strong> em vez de excluído: deixa de aparecer nas listas de clientes
+                            ativos, mas as ordens de serviço e os registros financeiros continuam vinculados a ele.
+                          </p>
+                        ) : (
+                          <p>
+                            Nenhum registro vinculado foi encontrado. O cadastro será{" "}
+                            <strong>excluído definitivamente</strong>. Esta ação não pode ser desfeita.
+                          </p>
+                        )}
+                      </div>
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={excluir}>Excluir</AlertDialogAction>
+                    <AlertDialogAction
+                      onClick={() => (temHistorico ? definirAtivo(false) : excluirDefinitivo())}
+                    >
+                      {temHistorico ? "Inativar cliente" : "Excluir definitivamente"}
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
@@ -150,6 +185,7 @@ function ClienteDetalhe() {
           </div>
         }
       />
+
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card className="shadow-card">
