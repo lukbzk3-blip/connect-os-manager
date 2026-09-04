@@ -3,13 +3,25 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 async function assertAdmin(context: { supabase: any; userId: string }) {
-  const { data, error } = await context.supabase.rpc("has_role", {
-    _user_id: context.userId,
-    _role: "admin",
-  });
-  if (error) throw new Error("Não foi possível validar sua permissão");
-  if (!data) throw new Error("Somente administradores podem gerenciar usuários");
+  const { data, error } = await context.supabase.rpc("is_admin");
+  if (!error) {
+    if (!data) throw new Error("Somente administradores podem gerenciar usuários");
+    return;
+  }
+
+  // Fallback: leitura direta do próprio papel (protegida por RLS).
+  const { data: roles, error: rolesError } = await context.supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", context.userId)
+    .eq("role", "admin")
+    .maybeSingle();
+  if (rolesError) {
+    throw new Error(`Não foi possível validar sua permissão: ${rolesError.message}`);
+  }
+  if (!roles) throw new Error("Somente administradores podem gerenciar usuários");
 }
+
 
 export type UsuarioAdmin = {
   id: string;
