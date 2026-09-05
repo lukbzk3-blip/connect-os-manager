@@ -138,15 +138,32 @@ function UsuariosPage() {
   const transferirM = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.rpc("transferir_admin" as never, { novo_admin: destino } as never);
-      if (error) throw error;
+      if (error) {
+        throw new Error(
+          error.message || error.details || error.hint || "Não foi possível transferir a administração",
+        );
+      }
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       setTransferirOpen(false);
       setDestino("");
-      ok("Administração transferida");
+      // Perdemos o nível de administrador: descartar dados que exigem essa permissão.
+      qc.removeQueries({ queryKey: ["usuarios"] });
+      await qc.invalidateQueries({ queryKey: ["session"] });
+      toast.success("Administração transferida. Seu acesso agora é de Funcionário.");
+      navigate({ to: "/dashboard" });
     },
-    onError: fail,
+    onError: (e: unknown) => {
+      const msg =
+        e instanceof Error
+          ? e.message
+          : typeof e === "object" && e && "message" in e
+            ? String((e as { message: unknown }).message)
+            : "Não foi possível transferir a administração";
+      toast.error(msg);
+    },
   });
+
 
   if (!authLoading && !isAdmin) {
     return <EmptyState title="Acesso restrito" description="Somente administradores gerenciam usuários." />;
