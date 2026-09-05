@@ -39,6 +39,8 @@ export const Route = createFileRoute("/_authenticated/usuarios/")({
 function UsuariosPage() {
   const { isAdmin, isLoading: authLoading, userId } = useAuth();
   const qc = useQueryClient();
+  const navigate = useNavigate();
+
 
   const listar = useServerFn(listarUsuarios);
   const criar = useServerFn(criarUsuario);
