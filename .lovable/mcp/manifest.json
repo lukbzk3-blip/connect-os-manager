@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "sdk_version": "2.3.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://vlxdbgmvmptqzpwmrvyj.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "connect-assistencia-72",
+      "version": "0.1.0",
+      "title": "Connect Assistência (72)"
+    },
+    "tools": [
+      {
+        "name": "listar_clientes",
+        "title": "Listar clientes",
+        "description": "Lista ou busca clientes da assistência técnica por nome, telefone ou documento.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "busca": {
+              "description": "Texto para buscar no nome, telefone ou CPF/CNPJ.",
+              "type": "string",
+              "minLength": 1
+            },
+            "limite": {
+              "default": 20,
+              "description": "Quantidade máxima de clientes.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "criar_cliente",
+        "title": "Cadastrar cliente",
+        "description": "Cadastra um novo cliente na assistência técnica.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "nome": {
+              "type": "string",
+              "minLength": 2,
+              "description": "Nome completo do cliente."
+            },
+            "telefone": {
+              "type": "string"
+            },
+            "whatsapp": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+            },
+            "cpf_cnpj": {
+              "type": "string"
+            },
+            "cidade": {
+              "type": "string"
+            },
+            "observacoes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "nome"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "listar_ordens_servico",
+        "title": "Listar ordens de serviço",
+        "description": "Lista as ordens de serviço mais recentes, opcionalmente filtradas por situação.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "status": {
+              "description": "Situação da ordem de serviço.",
+              "type": "string",
+              "enum": [
+                "recebido",
+                "em_analise",
+                "aguardando_aprovacao",
+                "aprovado",
+                "em_manutencao",
+                "aguardando_peca",
+                "pronto",
+                "entregue",
+                "cancelado"
+              ]
+            },
+            "limite": {
+              "default": 20,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "detalhar_ordem_servico",
+        "title": "Detalhar ordem de serviço",
+        "description": "Mostra os detalhes de uma ordem de serviço pelo número.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "numero": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991,
+              "description": "Número da ordem de serviço."
+            }
+          },
+          "required": [
+            "numero"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "estoque_baixo",
+        "title": "Peças com estoque baixo",
+        "description": "Lista as peças e produtos cuja quantidade está no limite mínimo ou abaixo dele.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "limite": {
+              "default": 30,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
