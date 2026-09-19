@@ -73,7 +73,7 @@ function AuthPage() {
       return;
     }
     toast.success("Bem-vindo de volta!");
-    navigate({ to: "/dashboard" });
+    irParaDestino();
   }
 
   async function cadastrar(e: React.FormEvent) {
@@ -83,7 +83,7 @@ function AuthPage() {
       email: email.trim(),
       password: senha,
       options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: `${window.location.origin}${destino ?? "/dashboard"}`,
         data: { nome },
       },
     });
@@ -101,7 +101,7 @@ function AuthPage() {
       return;
     }
     toast.success("Conta criada!");
-    navigate({ to: "/dashboard" });
+    irParaDestino();
   }
 
   return (
