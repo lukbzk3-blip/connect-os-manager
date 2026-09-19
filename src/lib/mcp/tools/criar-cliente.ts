@@ -21,7 +21,16 @@ export default defineTool({
     const supabase = supabaseForUser(ctx);
     const { data, error } = await supabase
       .from("clientes")
-      .insert({ ...input, created_by: ctx.getUserId() ?? null })
+      .insert({
+        nome: input.nome,
+        telefone: input.telefone ?? null,
+        whatsapp: input.whatsapp ?? null,
+        email: input.email ?? null,
+        cpf_cnpj: input.cpf_cnpj ?? null,
+        cidade: input.cidade ?? null,
+        observacoes: input.observacoes ?? null,
+        created_by: ctx.getUserId() ?? null,
+      })
       .select("id, nome, telefone, whatsapp, email")
       .maybeSingle();
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
