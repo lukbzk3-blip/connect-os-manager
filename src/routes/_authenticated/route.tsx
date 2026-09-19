@@ -27,7 +27,7 @@ export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async () => {
     const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) throw redirect({ to: "/auth" });
+    if (error || !data.user) throw redirect({ to: "/auth", search: {} });
     return { user: data.user };
   },
   component: AppLayout,
@@ -63,7 +63,7 @@ function AppLayout() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate({ to: "/auth", replace: true, search: {} });
   }
 
   const isActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
