@@ -10,10 +10,17 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 
+function destinoSeguro(next: string | undefined): string | null {
+  if (!next || !next.startsWith("/") || next.startsWith("//")) return null;
+  return next;
+}
+
 export const Route = createFileRoute("/auth")({
   // A tela de login depende da sessão do navegador; renderizar só no cliente
   // evita divergência entre o HTML do servidor e o da hidratação.
   ssr: false,
+  validateSearch: (s: Record<string, unknown>): { next?: string } =>
+    typeof s["next"] === "string" ? { next: s["next"] } : {},
   head: () => ({
     meta: [
       { title: "Entrar — CONNECT SISTEMAS" },
@@ -27,16 +34,28 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
 
+  const destino = destinoSeguro(next);
+
+  function irParaDestino() {
+    if (destino) {
+      window.location.href = destino;
+      return;
+    }
+    navigate({ to: "/dashboard" });
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard" });
+      if (data.session) irParaDestino();
     });
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, destino]);
 
   async function entrar(e: React.FormEvent) {
     e.preventDefault();
@@ -54,7 +73,7 @@ function AuthPage() {
       return;
     }
     toast.success("Bem-vindo de volta!");
-    navigate({ to: "/dashboard" });
+    irParaDestino();
   }
 
   async function cadastrar(e: React.FormEvent) {
@@ -64,7 +83,7 @@ function AuthPage() {
       email: email.trim(),
       password: senha,
       options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: `${window.location.origin}${destino ?? "/dashboard"}`,
         data: { nome },
       },
     });
@@ -82,7 +101,7 @@ function AuthPage() {
       return;
     }
     toast.success("Conta criada!");
-    navigate({ to: "/dashboard" });
+    irParaDestino();
   }
 
   return (
