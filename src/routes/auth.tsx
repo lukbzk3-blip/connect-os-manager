@@ -10,10 +10,18 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 
+function destinoSeguro(next: string | undefined): string | null {
+  if (!next || !next.startsWith("/") || next.startsWith("//")) return null;
+  return next;
+}
+
 export const Route = createFileRoute("/auth")({
   // A tela de login depende da sessão do navegador; renderizar só no cliente
   // evita divergência entre o HTML do servidor e o da hidratação.
   ssr: false,
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s["next"] === "string" ? s["next"] : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Entrar — CONNECT SISTEMAS" },
