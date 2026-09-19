@@ -19,9 +19,8 @@ export const Route = createFileRoute("/auth")({
   // A tela de login depende da sessão do navegador; renderizar só no cliente
   // evita divergência entre o HTML do servidor e o da hidratação.
   ssr: false,
-  validateSearch: (s: Record<string, unknown>) => ({
-    next: typeof s["next"] === "string" ? s["next"] : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { next?: string } =>
+    typeof s["next"] === "string" ? { next: s["next"] } : {},
   head: () => ({
     meta: [
       { title: "Entrar — CONNECT SISTEMAS" },
